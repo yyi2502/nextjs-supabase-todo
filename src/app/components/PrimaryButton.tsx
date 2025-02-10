@@ -1,7 +1,10 @@
 import { PrimaryButtonProps } from "./types/types";
 
-const PrimaryButton = (props: PrimaryButtonProps) => {
-  const { type = "button", children, handleClick } = props;
+const PrimaryButton: React.FC<PrimaryButtonProps> = ({
+  type = "button",
+  children,
+  handleClick,
+}) => {
   return (
     <button
       type={type}

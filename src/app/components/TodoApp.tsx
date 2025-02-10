@@ -9,7 +9,7 @@ import { TodoType } from "./types/types";
 import PrimaryButton from "./PrimaryButton";
 import TodoList from "./TodoList";
 
-const TodoApp = () => {
+const TodoApp: React.FC = () => {
   const [todoTitle, setTodoTitle] = useState<string>("");
   const [todos, setTodos] = useState<TodoType[]>([]);
 
@@ -86,7 +86,7 @@ const TodoApp = () => {
           />
           <PrimaryButton type="submit">add</PrimaryButton>
         </form>
-        <TodoList todos={todos} setTodos={setTodos} />
+        <TodoList todos={todos} />
       </section>
     </main>
   );

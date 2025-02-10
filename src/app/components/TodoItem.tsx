@@ -6,8 +6,7 @@ import {
 } from "../../../utils/supabaseFunctions";
 import PrimaryButton from "./PrimaryButton";
 
-const TodoItem = (props: TodoType) => {
-  const { title, id } = props;
+const TodoItem: React.FC<TodoType> = ({ title, id }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editTitle, setEditTitle] = useState<string>("");
   const handleDeleteButton = (id: number) => {
@@ -21,6 +20,7 @@ const TodoItem = (props: TodoType) => {
     setEditTitle(title);
     setIsEditing(true);
   };
+
   const handleSaveButton = (id: number) => {
     const saveTodo = async () => {
       await supabaseUpdateTodo(id, editTitle);
