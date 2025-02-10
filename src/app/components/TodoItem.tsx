@@ -6,13 +6,8 @@ import {
 } from "../../../utils/supabaseFunctions";
 import PrimaryButton from "./PrimaryButton";
 
-type TodoItemProps = {
-  id: number;
-  title: string;
-  setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
-};
-const TodoItem = (props: TodoItemProps) => {
-  const { title, id, setTodos } = props;
+const TodoItem = (props: TodoType) => {
+  const { title, id } = props;
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editTitle, setEditTitle] = useState<string>("");
   const handleDeleteButton = (id: number) => {
@@ -26,7 +21,7 @@ const TodoItem = (props: TodoItemProps) => {
     setEditTitle(title);
     setIsEditing(true);
   };
-  const handleSaveButton = (id: number, title: string) => {
+  const handleSaveButton = (id: number) => {
     const saveTodo = async () => {
       await supabaseUpdateTodo(id, editTitle);
     };
@@ -49,7 +44,7 @@ const TodoItem = (props: TodoItemProps) => {
             className="w-full"
             onChange={handleChangeInput}
           />
-          <PrimaryButton handleClick={() => handleSaveButton(id, title)}>
+          <PrimaryButton handleClick={() => handleSaveButton(id)}>
             save
           </PrimaryButton>
         </>
