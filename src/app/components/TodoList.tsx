@@ -1,16 +1,23 @@
 import TodoItem from "./TodoItem";
-// type TodoType = {
-//   id:string,
-//   title : string
-// }
-const TodoList = () => {
+import { TodoType } from "./types/types";
+
+type TodoListProps = {
+  todos: TodoType[];
+  setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
+};
+const TodoList = (props: TodoListProps) => {
+  const { todos, setTodos } = props;
   return (
-    <div>
-      <ul className="mt-5">
-        <TodoItem />
-      </ul>
-    </div>
+    <ul>
+      {todos.map((todo: TodoType) => (
+        <TodoItem
+          key={todo.id}
+          id={todo.id}
+          title={todo.title}
+          setTodos={setTodos}
+        />
+      ))}
+    </ul>
   );
 };
-
 export default TodoList;
