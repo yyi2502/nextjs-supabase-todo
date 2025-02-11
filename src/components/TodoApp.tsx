@@ -47,7 +47,7 @@ const TodoApp: React.FC = () => {
   const handleClickAddButton = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (title === "") return;
-    supabaseInsertTodo(title);
+    supabaseInsertTodo(title); //エラー：型 'string' には型 'TodoType' と共通のプロパティがありません。
     setTitle("");
   };
 
