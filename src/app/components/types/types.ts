@@ -7,8 +7,8 @@ export type PrimaryButtonProps = {
 };
 
 export type TodoType = {
-  id: number;
-  title: string;
+  id?: number;
+  title?: string;
 };
 
 export type TodoListProps = {

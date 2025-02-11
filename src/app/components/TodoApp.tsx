@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../../utils/supabase";
 import {
+  subscribeToTodoChanges,
   supabaseGetAllTodos,
   supabaseInsertTodo,
 } from "../../../utils/supabaseFunctions";
@@ -10,36 +11,15 @@ import PrimaryButton from "./PrimaryButton";
 import TodoList from "./TodoList";
 
 const TodoApp: React.FC = () => {
-  const [todoTitle, setTodoTitle] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
   const [todos, setTodos] = useState<TodoType[]>([]);
 
   useEffect(() => {
     // 初回データ取得
     getSupaBaseData();
 
-    // リアルタイムの設定
-    const channels = supabase
-      .channel("todo-changes")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "todo" },
-        (payload) => {
-          if (payload.eventType === "INSERT") {
-            setTodos((prevTodos) => [...prevTodos, payload.new as TodoType]);
-          } else if (payload.eventType === "DELETE") {
-            setTodos((prevTodos) =>
-              prevTodos.filter((todo) => todo.id !== payload.old.id)
-            );
-          } else if (payload.eventType === "UPDATE") {
-            setTodos((prevTodos) =>
-              prevTodos.map((todo) =>
-                todo.id === payload.new.id ? (payload.new as TodoType) : todo
-              )
-            );
-          }
-        }
-      )
-      .subscribe();
+    // リアルタイムリスナーの開始
+    const channels = subscribeToTodoChanges(setTodos);
     // クリーンアップ関数
     return () => {
       channels.unsubscribe();
@@ -59,14 +39,14 @@ const TodoApp: React.FC = () => {
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setTodoTitle(value);
+    setTitle(value);
   };
 
   const handleClickAddButton = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (todoTitle === "") return;
-    supabaseInsertTodo(todoTitle);
-    setTodoTitle("");
+    if (title === "") return;
+    supabaseInsertTodo(title);
+    setTitle("");
   };
 
   return (
@@ -80,7 +60,7 @@ const TodoApp: React.FC = () => {
           <input
             type="text"
             placeholder="入力してください"
-            value={todoTitle}
+            value={title}
             className="w-full border bg-gray-50 rounded-lg px-2"
             onChange={handleChangeInput}
           />
