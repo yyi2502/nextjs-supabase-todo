@@ -1,4 +1,4 @@
-import { PrimaryButtonProps } from "./types/types";
+import { PrimaryButtonProps } from "@/types/types";
 
 const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   type = "button",

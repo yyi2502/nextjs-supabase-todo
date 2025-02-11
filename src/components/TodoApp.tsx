@@ -1,12 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { supabase } from "../../../utils/supabase";
 import {
   subscribeToTodoChanges,
   supabaseGetAllTodos,
   supabaseInsertTodo,
-} from "../../../utils/supabaseFunctions";
-import { TodoType } from "./types/types";
+} from "@/utils/supabaseFunctions";
+import { TodoType } from "@/types/types";
 import PrimaryButton from "./PrimaryButton";
 import TodoList from "./TodoList";
 
@@ -26,6 +25,7 @@ const TodoApp: React.FC = () => {
     };
   }, []);
 
+  // 初回データ取得
   const getSupaBaseData = async () => {
     try {
       const response = await supabaseGetAllTodos();
@@ -37,11 +37,13 @@ const TodoApp: React.FC = () => {
     }
   };
 
+  // input変更時
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setTitle(value);
   };
 
+  // addボタンクリック時
   const handleClickAddButton = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (title === "") return;

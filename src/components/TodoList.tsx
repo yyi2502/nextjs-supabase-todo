@@ -1,5 +1,5 @@
 import TodoItem from "./TodoItem";
-import { TodoListProps, TodoType } from "./types/types";
+import { TodoListProps, TodoType } from "@/types/types";
 
 const TodoList: React.FC<TodoListProps> = ({ todos }) => {
   return (

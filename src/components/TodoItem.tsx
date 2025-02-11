@@ -1,36 +1,42 @@
 import { useState } from "react";
-import { TodoType } from "./types/types";
+import PrimaryButton from "./PrimaryButton";
 import {
   supabaseDeleteTodo,
   supabaseUpdateTodo,
-} from "../../../utils/supabaseFunctions";
-import PrimaryButton from "./PrimaryButton";
+  TodoType,
+} from "@/utils/supabaseFunctions";
 
 const TodoItem: React.FC<TodoType> = ({ title = "", id = 0 }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editTitle, setEditTitle] = useState<string>("");
 
-  const handleDeleteButton = (id: TodoType) => {
+  // deleteボタンクリック時
+  const handleDeleteButton = (props: TodoType) => {
+    const { id } = props;
     const deleteTodo = async () => {
       await supabaseDeleteTodo(id);
     };
     deleteTodo();
   };
 
+  // editボタンクリック時
   const handleEditButton = () => {
     setEditTitle(title);
     setIsEditing(true);
   };
 
-  const handleSaveButton = (id: TodoType) => {
+  // saveボタンクリック時
+  const handleSaveButton = (props: TodoType) => {
+    const { id } = props;
     const saveTodo = async () => {
-      const todo: TodoType = { id: Number(id), title: editTitle };
+      const todo: TodoType = { id, title: editTitle };
       await supabaseUpdateTodo(todo);
     };
     saveTodo();
     setIsEditing(false);
   };
 
+  // 編集input変更時
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEditTitle(value);
@@ -46,7 +52,7 @@ const TodoItem: React.FC<TodoType> = ({ title = "", id = 0 }) => {
             className="w-full"
             onChange={handleChangeInput}
           />
-          <PrimaryButton handleClick={() => handleSaveButton(id)}>
+          <PrimaryButton handleClick={() => handleSaveButton({ id })}>
             save
           </PrimaryButton>
         </>
@@ -56,7 +62,7 @@ const TodoItem: React.FC<TodoType> = ({ title = "", id = 0 }) => {
           <PrimaryButton handleClick={handleEditButton}>edit</PrimaryButton>
         </>
       )}
-      <PrimaryButton handleClick={() => handleDeleteButton(id)}>
+      <PrimaryButton handleClick={() => handleDeleteButton({ id })}>
         delete
       </PrimaryButton>
     </li>
