@@ -9,8 +9,8 @@ export type PrimaryButtonProps = {
 
 // todoの型定義
 export type TodoType = {
-  id?: number;
-  title?: string;
+  id: number;
+  title: string;
 };
 
 // todosのの型定義

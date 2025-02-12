@@ -2,27 +2,27 @@ import { supabase } from "./supabase";
 import { TodoType } from "@/types/types";
 
 // 取得
-export const supabaseGetAllTodos = async () => {
-  const response = await supabase.from("todo").select("*");
-  return response.data;
+export const supabaseGetAllTodos = async (): Promise<TodoType[]> => {
+  const { data } = await supabase.from("todo").select("*");
+  return data as TodoType[];
 };
 
 // 追加
-export const supabaseInsertTodo = async (title: TodoType) => {
+export const supabaseInsertTodo = async (title: string): Promise<void> => {
   await supabase.from("todo").insert([{ title: title }]);
 };
 
 // 削除
-export const supabaseDeleteTodo = async (id: TodoType) => {
+export const supabaseDeleteTodo = async (id: number): Promise<void> => {
   await supabase.from("todo").delete().eq("id", id);
 };
 
 // 上書き
-export const supabaseUpdateTodo = async ({ id, title }: TodoType) => {
+export const supabaseUpdateTodo = async (todo: TodoType): Promise<void> => {
   await supabase
     .from("todo")
-    .update([{ title: title }])
-    .eq("id", id);
+    .update([{ title: todo.title }])
+    .eq("id", todo.id);
 };
 
 // リアルタイムリスナー

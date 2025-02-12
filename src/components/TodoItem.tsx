@@ -3,16 +3,15 @@ import PrimaryButton from "./PrimaryButton";
 import {
   supabaseDeleteTodo,
   supabaseUpdateTodo,
-  TodoType,
 } from "@/utils/supabaseFunctions";
+import { TodoType } from "@/types/types";
 
 const TodoItem: React.FC<TodoType> = ({ title = "", id = 0 }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editTitle, setEditTitle] = useState<string>("");
 
   // deleteボタンクリック時
-  const handleDeleteButton = (props: TodoType) => {
-    const { id } = props;
+  const handleDeleteButton = (id: number) => {
     const deleteTodo = async () => {
       await supabaseDeleteTodo(id);
     };
@@ -26,8 +25,7 @@ const TodoItem: React.FC<TodoType> = ({ title = "", id = 0 }) => {
   };
 
   // saveボタンクリック時
-  const handleSaveButton = (props: TodoType) => {
-    const { id } = props;
+  const handleSaveButton = (id: number) => {
     const saveTodo = async () => {
       const todo: TodoType = { id, title: editTitle };
       await supabaseUpdateTodo(todo);
@@ -52,7 +50,7 @@ const TodoItem: React.FC<TodoType> = ({ title = "", id = 0 }) => {
             className="w-full"
             onChange={handleChangeInput}
           />
-          <PrimaryButton handleClick={() => handleSaveButton({ id })}>
+          <PrimaryButton handleClick={() => handleSaveButton(id)}>
             save
           </PrimaryButton>
         </>
@@ -62,7 +60,7 @@ const TodoItem: React.FC<TodoType> = ({ title = "", id = 0 }) => {
           <PrimaryButton handleClick={handleEditButton}>edit</PrimaryButton>
         </>
       )}
-      <PrimaryButton handleClick={() => handleDeleteButton({ id })}>
+      <PrimaryButton handleClick={() => handleDeleteButton(id)}>
         delete
       </PrimaryButton>
     </li>
